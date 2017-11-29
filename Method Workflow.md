@@ -169,8 +169,23 @@ Output File Names:
 /home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.bad.accnos
 /home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.good.count_table
 ```
-
-
+Another summary is produced:
+```
+summary.seqs(fasta=Saanich.trim.contigs.good.unique.good.align, count=Saanich.trim.contigs.good.good.count_table)
+```
+```
+                Start   End     NBases  Ambigs  Polymer NumSeqs
+Minimum:        10357   25432   297     0       3       1
+2.5%-tile:      10364   25432   299     0       4       1776
+25%-tile:       10370   25432   299     0       4       17752
+Median:         10370   25434   300     0       4       35503
+75%-tile:       10370   25434   300     0       4       53254
+97.5%-tile:     10370   25436   303     0       6       69229
+Maximum:        10370   26158   323     0       8       71004
+Mean:   	 10369.6 25433.7   300.087 0       4.32149
+# of unique seqs:       70301
+total # of seqs:        71004
+```
 
 
 
