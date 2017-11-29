@@ -112,7 +112,49 @@ Mean:   1       297.993 297.993 0       4.47064
 # of unique seqs:       302601
 total # of seqs:        307714
 ```
-The data now contains reads that are between 200-350 bases long, have no ambiguous bases and a maximum homopolymer length of 8 bases. 
+The data now contains reads that are between 200-350 bases long, have no ambiguous bases and a maximum homopolymer length of 8 bases. The number of sequences have been reduced from 332727 to 307714 with a total of 302601 unique sequences.
+
+### Aligning sequences against a database
+Sequences were aligned against a Silva database of 16S sequences. An additional parameter is given where `flip=T` indicates an  attempt to run the reverse complement of the sequence if the forward sequence falls below a certain threshold. The sequence that had a better alignment is returned.
+
+```
+align.seqs(fasta=Saanich.trim.contigs.good.unique.fasta, reference=/home/micb405/data/project_3/databases/silva.nr_v128.align, flip=T)
+```
+Output of the alignment:
+```
+Reading in the /home/micb405/data/project_3/databases/silva.nr_v128.align template sequences... DONE.
+It took 290 to read  190661 sequences.
+Aligning sequences from Saanich.trim.contigs.good.unique.fasta ...
+[WARNING]: Some of your sequences generated alignments that eliminated too many bases, a list is provided in
+/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.flip.accnos.
+If the reverse compliment proved to be better it was reported.
+
+It took 7000 secs to align 302601 sequences.
+
+Output File Names:
+/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.align
+/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.align.report
+/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.flip.accnos
+```
+The summary of the sequences following alignment was reported.
+```
+summary.seqs(fasta=Saanich.trim.contigs.good.unique.align, count=Saanich.trim.contigs.good.count_table)
+```
+```
+                Start   End     NBases  Ambigs  Polymer NumSeqs
+Minimum:        6237    16119   8       0       2       1
+2.5%-tile:      10366   25318   296     0       4       7693
+25%-tile:       10370   25318   297     0       4       76929
+Median:         10370   25318   297     0       4       153858
+75%-tile:       10370   25432   299     0       5       230786
+97.5%-tile:     11886   25436   301     0       6       300022
+Maximum:        43102   43116   324     0       8       307714
+Mean:   10627.6 25345.5 297.99  0       4.47062
+# of unique seqs:       302601
+total # of seqs:        307714
+```
+The data now shows a new starting point for many of the sequences at ~10370 bases. (??)
+
 
 
 
