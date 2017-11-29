@@ -115,7 +115,7 @@ total # of seqs:        307714
 The data now contains reads that are between 200-350 bases long, have no ambiguous bases and a maximum homopolymer length of 8 bases. The number of sequences have been reduced from 332727 to 307714 with a total of 302601 unique sequences.
 
 ### Aligning sequences against a database
-Sequences were aligned against a Silva database of 16S sequences. An additional parameter is given where `flip=T` indicates an  attempt to run the reverse complement of the sequence if the forward sequence falls below a certain threshold. The sequence that had a better alignment is returned.
+Sequences were aligned against a Silva database of 16S sequences. Though GreenBase is also a valid database for alignment, it is often of lower quality and contains incomplete 16S sequences making alignment more difficult and error-prone. An additional parameter is given where `flip=T` indicates an  attempt to run the reverse complement of the sequence if the forward sequence falls below a certain threshold. The sequence that had a better alignment is returned.
 
 ```
 align.seqs(fasta=Saanich.trim.contigs.good.unique.fasta, reference=/home/micb405/data/project_3/databases/silva.nr_v128.align, flip=T)
@@ -154,6 +154,22 @@ Mean:   10627.6 25345.5 297.99  0       4.47062
 total # of seqs:        307714
 ```
 The data now shows a new starting point for many of the sequences at ~10370 bases. (??)
+
+### Rescreening 
+The purpose of rescreening our data is to verify that the sequences overlap the same region using the same start and end positions found in the most recent sequence summary.
+
+```
+screen.seqs(fasta=Saanich.trim.contigs.good.unique.align, count=Saanich.trim.contigs.good.count_table, summary=Saanich.trim.contigs.good.unique.summary, start=10370, end=25432)
+```
+Output:
+```
+Output File Names:
+/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.good.summary
+/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.good.align
+/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.bad.accnos
+/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.good.count_table
+```
+
 
 
 
