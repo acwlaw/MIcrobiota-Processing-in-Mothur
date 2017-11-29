@@ -6,7 +6,7 @@ Link to the report can be found here: ____
 
 ## Method workflow
 
-The output of all of our results have been set to: `set.dir(output=/home/micb405/Group10/Project3_2)`
+The output of all of the results have been set to: `set.dir(output=/home/micb405/Group10/Project3_2)`
 
 ### Preparing Data using FASTQC and Trimmomatic
 Datasets were run under FASTQC to determine the overall quality of the sequences. It was observed that majority of bases are above a quality score of 6. The tool *Trimmomatic* was used to eliminate the poor qualities at the end of the reads.
