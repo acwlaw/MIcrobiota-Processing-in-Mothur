@@ -1,14 +1,14 @@
-# Microbiota Processing in Mothur
+# Microbiota Processing in Mothur Method Workflow
 
-Project members: Alex Law, Anthony Yan, Max Fan, Ryan Lou, Tiffany Leung, Tina Fan
+Project members: Max Fan, Tina Fan, Alex Law, Tiffany Leung, Ryan Lou, Anthony Yan
 
 Link to the report can be found here: ____
 
-## Method workflow
+## Preparation of data
 
 The output of all of the results have been set to: `set.dir(output=/home/micb405/Group10/Project3_2)`
 
-### Preparing Data using FASTQC and Trimmomatic
+### Analyzing quality of sequences + trimming using FASTQC and Trimmomatic
 Datasets were run under FASTQC to determine the overall quality of the sequences. It was observed that majority of bases are above a quality score of 6. The tool *Trimmomatic* was used to eliminate the poor qualities at the end of the reads.
 
 ```
@@ -316,7 +316,102 @@ Output File Names:
 It took 3 secs to summarize 231606 sequences.
 ```
 ### Removal of singletons
+Sequences that appear only once in the dataset (singletons) will have minimal impact on downstream analyses and may make for a less efficient processing and should therefore be removed from the current dataset. These sequences are placed in the "rare" output file. Having `cutoff=1` keeps sequences that appear more than one time in the dataset. 
+```
+mothur > split.abund(fasta=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, cutoff=1)
+```
+```
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.rare.count_table
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.abund.count_table
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.rare.fasta
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.fasta
+```
+Two summaries are produced, the first is the summary of the removed singletons (rare) and the second of the dataset without singletons (abund).
+
+**Removed Singletons (rare)**
+```
+summary.seqs(fasta=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.rare.fasta, count=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.rare.count_table)
+```
+```
+                Start   End     NBases  Ambigs  Polymer NumSeqs
+Minimum:        1       562     268     0       3       1
+2.5%-tile:      1       564     296     0       4       1387
+25%-tile:       1       564     297     0       4       13866
+Median:         1       564     297     0       4       27731
+75%-tile:       1       564     297     0       5       41596
+97.5%-tile:     1       564     298     0       6       54075
+Maximum:        5       564     310     0       8       55461
+Mean:           1.00009 563.999 296.978 0       4.46164
+# of unique seqs:       55461
+total # of seqs:        55461
+
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.rare.summary
+```
+**Dataset (abund)**
+```
+summary.seqs(fasta=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.fasta, count=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.abund.count_table)
+```
+```
+                Start   End     NBases  Ambigs  Polymer NumSeqs
+Minimum:        1       562     294     0       3       1
+2.5%-tile:      1       564     296     0       4       4404
+25%-tile:       1       564     297     0       4       44037
+Median:         1       564     297     0       4       88073
+75%-tile:       1       564     297     0       5       132109
+97.5%-tile:     1       564     298     0       6       171742
+Maximum:        1       564     301     0       8       176145
+Mean:           1       564     297.036 0       4.39793
+# of unique seqs:       19894
+total # of seqs:        176145
 
 
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.summary
+```
+The dataset has now been fully cleared of poor quality/undesirable sequences. To make for a more organized data directory, files were renamed to our appropriate depths.
+```
+cp Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.fasta ../OTUFiles/Saanich.100m.final.fasta
+```
 
+## Clustering OTU 
+A new output directory is specified for clustering data: `set.dir(output=/home/micb405/Group10/Project3_2/OTUFiles)`
+
+### Making OTU
+Following sequence cleanup, it is now possible to make our operational taxonomic units (OTUs) for our dataset. The distance between the sequences are calculated and are then clustered according to their distances. `dist.seqs()` calculates a distance matrix of our sequences.
+```
+dist.seqs(fasta=Saanich.100m.final.fasta, output=lt)
+```
+```
+Output File Names:
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.dist
+```
+The sequences are then clustered together using the default cutoff of 0.3.
+```
+cluster(phylip=Saanich.100m.final.phylip.dist, count=Saanich.100m.final.count, cutoff=0.03)
+```
+```
+iter    time    label   num_otus        cutoff  tp      tn      fp      fn      sensitivity     specificity     ppv     npv     fdr     accuracy        mcc    f1score
+0       0       0.03    19894   0.03    0       196243932       0       1631739 0       1       0       0.991754        0       0.991754        0       0
+1       2       0.03    1069    0.03    1392079 195527170       716762  239660  0.853126        0.996348        0.660116        0.998776        0.339884       0.995167 0.748138        0.744312
+2       2       0.03    811     0.03    1462878 195449481       794451  168861  0.896515        0.995952        0.648057        0.999137        0.351943       0.995132 0.759999        0.752303
+3       2       0.03    800     0.03    1463610 195449099       794833  168129  0.896963        0.99595 0.648062        0.999141        0.351938        0.9951330.760194        0.752464
+4       2       0.03    797     0.03    1463280 195449876       794056  168459  0.896761        0.995954        0.648233        0.999139        0.351767       0.995136 0.76021 0.752508
+
+It took 199 seconds to cluster
+
+
+Output File Names:
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.list
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.steps
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.sensspec
+```
+The clusters for our data were then formatted to an OTU table. `label=0.3` specifies the correct species-level of OTUs. **WHY ANSWER THIS**
+
+```
+make.shared(list=Saanich.100m.final.phylip.opti_mcc.list, count=Saanich.100m.final.count,label=0.03)
+```
+
+### Classifying OTU
 
