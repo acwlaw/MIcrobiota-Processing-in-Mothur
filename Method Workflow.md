@@ -414,4 +414,36 @@ make.shared(list=Saanich.100m.final.phylip.opti_mcc.list, count=Saanich.100m.fin
 ```
 
 ### Classifying OTU
+Once our OTUs have been sorted based off our calculated distance matrix, the following step allows us to classify the OTU and determine what they are. 
+
+`classify.seqs()` allows us to classify the sequences based on a database. Rather than using SILVA as before, the GreenGenes database is used to classify our OTU as the database have a low number of unsclassifieds compared to SILVA and can yield for better classifications of our OTU. We use the cutoff of 80 since we are 80% confident in the classification.
+
+```
+classify.seqs(fasta=Saanich.100m.final.fasta, count=Saanich.100m.final.count, template=/home/micb405/data/project_3/databases/gg_13_8_99.fasta, taxonomy=/home/micb405/data/project_3/databases/gg_13_8_99.gg.tax, cutoff=80)
+```
+```
+Output File Names:
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.gg.wang.taxonomy
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.gg.wang.tax.summary
+
+```
+`classify.otu()` uses the referenced classification to get a consensus taxonomy for our OTU.
+```
+classify.otu(list=Saanich.100m.final.phylip.opti_mcc.list, taxonomy=Saanich.100m.final.gg.wang.taxonomy, count=Saanich.100m.final.count, label=0.03, cutoff=80, basis=otu)
+```
+```
+0.03    797
+
+Output File Names:
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.0.03.cons.taxonomy
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.0.03.cons.tax.summary
+```
+Finally, the OTU data is summarized using `summary.single()`
+```
+summary.single(shared=Saanich.100m.final.phylip.opti_mcc.shared, label=0.03, calc=nseqs-sobs-coverage)
+```
+```
+Output File Names:
+/home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.groups.summary
+```
 
