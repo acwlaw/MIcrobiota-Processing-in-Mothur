@@ -49,7 +49,7 @@ Median:         1       297     297     0       4       166364
 75%-tile:       1       299     299     0       5       249546
 97.5%-tile:     1       301     301     1       6       324409
 Maximum:        1       602     602     92      301     332727
-Mean:   1       297.673 297.673 0.124613        4.48462
+Mean:           1       297.673 297.673 0.124613        4.48462
 # of Seqs:      332727
 ```
 In our newly formed contigs, it is determined that there are 332727 number of sequences that are generally ~297 bases long. 
@@ -108,7 +108,7 @@ Median:         1       297     297     0       4       153858
 75%-tile:       1       299     299     0       5       230786
 97.5%-tile:     1       301     301     0       6       300022
 Maximum:        1       348     348     0       8       307714
-Mean:   1       297.993 297.993 0       4.47064
+Mean:           1       297.993 297.993 0       4.47064
 # of unique seqs:       302601
 total # of seqs:        307714
 ```
@@ -149,7 +149,7 @@ Median:         10370   25318   297     0       4       153858
 75%-tile:       10370   25432   299     0       5       230786
 97.5%-tile:     11886   25436   301     0       6       300022
 Maximum:        43102   43116   324     0       8       307714
-Mean:   10627.6 25345.5 297.99  0       4.47062
+Mean:           10627.6 25345.5 297.99  0       4.47062
 # of unique seqs:       302601
 total # of seqs:        307714
 ```
@@ -159,15 +159,15 @@ The data now shows a new starting point for many of the sequences at ~10370 base
 The purpose of rescreening our data is to verify that the sequences overlap the same region using the same start and end positions found in the most recent sequence summary.
 
 ```
-screen.seqs(fasta=Saanich.trim.contigs.good.unique.align, count=Saanich.trim.contigs.good.count_table, summary=Saanich.trim.contigs.good.unique.summary, start=10370, end=25432)
+screen.seqs(fasta=Saanich.trim.contigs.good.unique.align, count=Saanich.trim.contigs.good.count_table, summary=Saanich.trim.contigs.good.unique.summary, start=10370, end=25318)
 ```
 Output:
 ```
 Output File Names:
-/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.good.summary
-/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.good.align
-/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.unique.bad.accnos
-/home/micb405/Group10/Project3_2/Saanich.trim.contigs.good.good.count_table
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.summary
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.align
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.bad.accnos
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.good.count_table
 ```
 Another summary is produced:
 ```
@@ -175,16 +175,43 @@ summary.seqs(fasta=Saanich.trim.contigs.good.unique.good.align, count=Saanich.tr
 ```
 ```
                 Start   End     NBases  Ambigs  Polymer NumSeqs
-Minimum:        10357   25432   297     0       3       1
-2.5%-tile:      10364   25432   299     0       4       1776
-25%-tile:       10370   25432   299     0       4       17752
-Median:         10370   25434   300     0       4       35503
-75%-tile:       10370   25434   300     0       4       53254
-97.5%-tile:     10370   25436   303     0       6       69229
-Maximum:        10370   26158   323     0       8       71004
-Mean:   	 10369.6 25433.7   300.087 0       4.32149
-# of unique seqs:       70301
-total # of seqs:        71004
+Minimum:        10255   25318   268     0       3       1
+2.5%-tile:      10366   25318   297     0       4       6369
+25%-tile:       10370   25318   297     0       4       63682
+Median:         10370   25318   298     0       4       127364
+75%-tile:       10370   25432   299     0       5       191046
+97.5%-tile:     10370   25436   301     0       6       248359
+Maximum:        10370   26158   324     0       8       254727
+Mean:           10369.8 25350.4 298.127 0       4.37627
+# of unique seqs:       250706
+total # of seqs:        254727
+
+```
+### Filtering out overhangs of our sequences
+This step filters out sequences that extend the specified regions of alignment. To ensure that overhangs on both sides of the sequences are filtered out, `vertical=T` is set to true. Characters such as '.' and '-' are inserted into the sequence to represent insertions and deletions relative to the alignment database, but do not contribute to downstream analyses and utilize unnecessary computational processing are therefore are removed. '-' is removed by default and `trump=.` removes '.' from the sequences.
+```
+filter.seqs(fasta=Saanich.trim.contigs.good.unique.good.align, vertical=T, trump=.)
+```
+```
+Length of filtered alignment: 564
+Number of columns removed: 49436
+Length of the original alignment: 50000
+Number of sequences used to construct filter: 250706
+
+
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.filter
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.fasta
+```
+Following alignment and filtering out sequence overhangs, there is the need to de-replicate again to remove any additional identical sequences that may have formed.
+
+```
+unique.seqs(fasta=Saanich.trim.contigs.good.unique.good.filter.fasta, count=Saanich.trim.contigs.good.good.count_table)
+```
+```
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.count_table
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.fasta
 ```
 
 
