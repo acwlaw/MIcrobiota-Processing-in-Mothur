@@ -1,6 +1,6 @@
 # Microbiota Processing in Mothur
 
-Project members: Alex Law, Anthony Yan, Fan Tina, Max Faz, Ryan Lou, Tiffany Leung
+Project members: Alex Law, Anthony Yan, Max Fan, Ryan Lou, Tiffany Leung, Tina Fan
 
 Link to the report can be found here: ____
 
@@ -187,7 +187,7 @@ Mean:           10369.8 25350.4 298.127 0       4.37627
 total # of seqs:        254727
 
 ```
-### Filtering out overhangs of our sequences
+### Filtering out overhangs from the sequences
 This step filters out sequences that extend the specified regions of alignment. To ensure that overhangs on both sides of the sequences are filtered out, `vertical=T` is set to true. Characters such as '.' and '-' are inserted into the sequence to represent insertions and deletions relative to the alignment database, but do not contribute to downstream analyses and utilize unnecessary computational processing are therefore are removed. '-' is removed by default and `trump=.` removes '.' from the sequences.
 ```
 filter.seqs(fasta=Saanich.trim.contigs.good.unique.good.align, vertical=T, trump=.)
@@ -214,7 +214,66 @@ Output File Names:
 /home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.fasta
 ```
 
+### Organizing sequences into pre-clusters
+By organizing similar sequences into pre-clusters, we can further remove unnecessary sequences. `diff=3` indicates sequences that vary up to 3 sequences will be grouped into the same cluster to account for PCR errors. In addition to the grouping of sequences, the groups will be ordered in decreasing abundance.
+```
+pre.cluster(fasta=Saanich.trim.contigs.good.unique.good.filter.unique.fasta, count=Saanich.trim.contigs.good.unique.good.filter.count_table, diffs=3, processors=10)
+```
+```
+Total number of sequences before pre.cluster was 242619.
+pre.cluster removed 147377 sequences.
 
 
+It took 2891 secs to cluster 242619 sequences.
+It took 2905 secs to run pre.cluster.
+
+
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.fasta
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.count_table
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.100m.map
+```
+Again, a `summary.seqs()` is called to give us a picture of the sequences thus far.
+```
+                Start   End     NBases  Ambigs  Polymer NumSeqs
+Minimum:        1       562     268     0       3       1
+2.5%-tile:      1       564     296     0       4       6369
+25%-tile:       1       564     297     0       4       63682
+Median:         1       564     297     0       4       127364
+75%-tile:       1       564     297     0       5       191046
+97.5%-tile:     1       564     298     0       6       248359
+Maximum:        5       564     310     0       8       254727
+Mean:           1.00016 564     297.02  0       4.41622
+# of unique seqs:       95242
+total # of seqs:        254727
+
+
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.summary
+
+
+It took 1 secs to summarize 254727 sequences.
+```
+### Removing chimeras
+The presence of chimeras in our data may inflate the actual number of unique sequences. This is because chimeras are essentially a combination of two separate unique sequences which make the sequence appear as a third unique sequence. For this reason, chimeras must be removed using `chimera.uchime()`. Sequences that are marked as chimeras in one sample are not removed in other samples simply because there is only one sample used and as such, we must pass in `dereplicate=t` as an option. Ten threads were used to attempt to speed up the removal process.
+```
+chimera.uchime(fasta=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.fasta,count=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.count_table,dereplicate=t,processors=10)
+```
+```
+00:00  67Mb  100.0% Reading Saanich.trim.contigs.good.unique.good.filter.unique.precluster.temp
+00:00  67Mb 95.2k sequences
+44:53:16  82Mb  100.0% 19887/95241 chimeras found (20.9%)
+uchime v4.2.40
+by Robert C. Edgar
+http://drive5.com/uchime
+This code is donated to the public domain.
+
+It took 161598 secs to check 95242 sequences from group 100m.
+
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.chimeras
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos
+```
 
 
