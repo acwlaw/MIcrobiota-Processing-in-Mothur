@@ -63,7 +63,7 @@ Using `screen.seq()`, sequences were filtered using these parameters:
 * Maximum homopolymer length: 8
 * Maximum number of ambiguous bases: 0 (removal of all ambiguous bases)
 
-The minimum and maximum lengths were chosen based off the desired length of ~297 bases plus an additional 50 bases to accomodate for any adaptors. 
+The minimum and maximum lengths were chosen based off the desired length of ~297 bases plus an additional 50 bases to accomodate for any adaptors. Maximum homopolymer lengths were capped at 8 as anything higher would be indicative of a sequencing error.
 ```
 screen.seqs(fasta=Saanich.trim.contigs.fasta, group=Saanich.contigs.groups, maxambig=0, maxhomop=8, minlength=200, maxlength=350)
 ```
@@ -315,6 +315,8 @@ Output File Names:
 
 It took 3 secs to summarize 231606 sequences.
 ```
-### Removing residual poor quality sequences
+### Removal of singletons
+
+
 
 
