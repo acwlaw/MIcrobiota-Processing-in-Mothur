@@ -275,5 +275,46 @@ Output File Names:
 /home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.chimeras
 /home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos
 ```
+`chimera.uchime()` only identifies chimeras. `remove.seqs()` takes care of removing the chimeras.
+```
+remove.seqs(fasta=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.fasta,count=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table,accnos=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)
+```
+```
+[NOTE]: The count file should contain only unique names, so mothur assumes your fasta, list and taxonomy files also contain only uniques.
+
+
+Removed 19887 sequences from your fasta file.
+Removed 0 sequences from your count file.
+
+
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table
+```
+The summary table of the dataset following chimera identification and removal:
+```
+summary.seqs(fasta=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=Saanich.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table)
+```
+```
+                Start   End     NBases  Ambigs  Polymer NumSeqs
+Minimum:        1       562     268     0       3       1
+2.5%-tile:      1       564     296     0       4       5791
+25%-tile:       1       564     297     0       4       57902
+Median:         1       564     297     0       4       115804
+75%-tile:       1       564     297     0       5       173705
+97.5%-tile:     1       564     298     0       6       225816
+Maximum:        5       564     310     0       8       231606
+Mean:   1.00002 564     297.022 0       4.41318
+# of unique seqs:       75355
+total # of seqs:        231606
+
+
+Output File Names:
+/home/micb405/Group10/Project3_2/screenSeq_+1/Saanich.trim.contigs.good.unique.good.filter.unique.precluster.pick.summary
+
+
+It took 3 secs to summarize 231606 sequences.
+```
+### Removing residual poor quality sequences
 
 
