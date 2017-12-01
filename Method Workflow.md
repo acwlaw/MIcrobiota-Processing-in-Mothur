@@ -2,7 +2,7 @@
 
 Project members: Max Fan, Tina Fan, Alex Law, Tiffany Leung, Ryan Lou, Anthony Yan
 
-Link to the report can be found here: ____
+Link to the report can be found [here](https://drive.google.com/open?id=1zEXALDYhzRuwM7ROkxOkqXfr0d1kZPTi4xGyXSrXdWo)
 
 ## Preparation of data
 
@@ -445,5 +445,13 @@ summary.single(shared=Saanich.100m.final.phylip.opti_mcc.shared, label=0.03, cal
 ```
 Output File Names:
 /home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.groups.summary
+```
+`summary.single()` is also able to process the data differently using different calculators such as a Shannon diversity index to get a different perspective on the sample. 
+```
+summary.single(list=Saanich.100m.final.phylip.an.unique_list.list, calc=shannon)
+```
+```
+Output File Names: 
+/home/micb405/Group10/Assignment3_2/Saanich.100m.final.phylip.an.unique_list.summary
 ```
 
