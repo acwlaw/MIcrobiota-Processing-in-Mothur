@@ -407,7 +407,7 @@ Output File Names:
 /home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.steps
 /home/micb405/Group10/Project3_2/OTUFiles/Saanich.100m.final.phylip.opti_mcc.sensspec
 ```
-The clusters for our data were then formatted to an OTU table. `label=0.3` specifies the correct species-level of OTUs. **WHY ANSWER THIS**
+The clusters for our data were then formatted to an OTU table. `label=0.3` specifies the correct species-level of OTUs.
 
 ```
 make.shared(list=Saanich.100m.final.phylip.opti_mcc.list, count=Saanich.100m.final.count,label=0.03)
